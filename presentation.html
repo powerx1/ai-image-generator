@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Web - Project Presentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+        }
+
+        .slides-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            z-index: 10;
+        }
+
+        .slide.prev {
+            transform: translateX(-100%);
+        }
+
+        /* Slide 1 - Title Slide */
+        .slide-1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .title-content {
+            text-align: center;
+            color: white;
+        }
+
+        .main-title {
+            font-size: 5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .subtitle {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            font-weight: 400;
+            opacity: 0.8;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        /* Slide 2 - Project Overview */
+        .slide-2 {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .content-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 50px;
+            max-width: 1000px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .slide-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .overview-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .overview-icon {
+            font-size: 2rem;
+            color: #f5576c;
+            min-width: 50px;
+        }
+
+        .overview-text h3 {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .overview-text p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Slide 3 - Architecture */
+        .slide-3 {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .architecture-diagram {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .arch-block {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 200px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+
+        .arch-block:hover {
+            transform: translateY(-10px);
+        }
+
+        .arch-block i {
+            font-size: 3rem;
+            color: #4facfe;
+            margin-bottom: 15px;
+        }
+
+        .arch-block h3 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .arch-arrow {
+            font-size: 2rem;
+            color: white;
+        }
+
+        /* Slide 4 - Features */
+        .slide-4 {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+            max-width: 1200px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: scale(1.05);
+        }
+
+        .feature-card i {
+            font-size: 3rem;
+            color: #fa709a;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Slide 5 - Tech Stack */
+        .slide-5 {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+            max-width: 1000px;
+        }
+
+        .tech-item {
+            background: rgba(255,255,255,0.95);
+            padding: 30px 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .tech-item i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #330867;
+        }
+
+        .tech-item h4 {
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        /* Slide 6 - How It Works */
+        .slide-6 {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .workflow-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 40px;
+            max-width: 900px;
+        }
+
+        .workflow-step {
+            background: white;
+            padding: 25px 30px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-text h3 {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .step-text p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* Slide 7 - Demo/Screenshots */
+        .slide-7 {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+
+        .demo-content {
+            text-align: center;
+            max-width: 1100px;
+        }
+
+        .demo-showcase {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .demo-box {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .demo-box i {
+            font-size: 4rem;
+            color: #fcb69f;
+            margin-bottom: 15px;
+        }
+
+        .demo-box h3 {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .demo-box p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Slide 8 - Thank You */
+        .slide-8 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .thankyou-content {
+            text-align: center;
+            color: white;
+        }
+
+        .thankyou-content h1 {
+            font-size: 5rem;
+            font-weight: 900;
+            margin-bottom: 30px;
+        }
+
+        .contact-info {
+            font-size: 1.5rem;
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .contact-info a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .contact-info a:hover {
+            opacity: 0.8;
+        }
+
+        /* Navigation Controls */
+        .nav-controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.9);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #333;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .slide-counter {
+            background: rgba(255,255,255,0.9);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            color: #333;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 3rem;
+            }
+            .subtitle {
+                font-size: 1.5rem;
+            }
+            .overview-grid, .features-grid, .tech-grid, .demo-showcase {
+                grid-template-columns: 1fr;
+            }
+            .architecture-diagram {
+                flex-direction: column;
+            }
+            .slide {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slides-container">
+        <!-- Slide 1: Title -->
+        <div class="slide slide-1 active">
+            <div class="title-content">
+                <h1 class="main-title"><i class="fas fa-magic"></i> AI Image Web</h1>
+                <p class="subtitle">Advanced AI-Powered Image Generation Platform</p>
+                <p class="tagline">Transform Ideas into Visual Art with Cutting-Edge AI Technology</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Project Overview -->
+        <div class="slide slide-2">
+            <div class="content-card">
+                <h2 class="slide-title">Project Overview</h2>
+                <p style="text-align: center; color: #666; font-size: 1.2rem; margin-bottom: 30px;">
+                    A comprehensive web-based AI image generation platform that integrates multiple AI technologies
+                </p>
+                <div class="overview-grid">
+                    <div class="overview-item">
+                        <div class="overview-icon"><i class="fas fa-bullseye"></i></div>
+                        <div class="overview-text">
+                            <h3>Purpose</h3>
+                            <p>Provide an intuitive interface for AI-powered image generation and manipulation using Stable Diffusion models</p>
+                        </div>
+                    </div>
+                    <div class="overview-item">
+                        <div class="overview-icon"><i class="fas fa-users"></i></div>
+                        <div class="overview-text">
+                            <h3>Target Users</h3>
+                            <p>Artists, designers, content creators, and anyone interested in AI-generated imagery</p>
+                        </div>
+                    </div>
+                    <div class="overview-item">
+                        <div class="overview-icon"><i class="fas fa-rocket"></i></div>
+                        <div class="overview-text">
+                            <h3>Innovation</h3>
+                            <p>Combines text-to-image, image-to-image, and image-to-text capabilities in one platform</p>
+                        </div>
+                    </div>
+                    <div class="overview-item">
+                        <div class="overview-icon"><i class="fas fa-globe"></i></div>
+                        <div class="overview-text">
+                            <h3>Accessibility</h3>
+                            <p>User-friendly web interface with modern design and responsive layout</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Architecture -->
+        <div class="slide slide-3">
+            <div class="content-card">
+                <h2 class="slide-title">System Architecture</h2>
+                <div class="architecture-diagram">
+                    <div class="arch-block">
+                        <i class="fas fa-desktop"></i>
+                        <h3>Frontend</h3>
+                        <p>HTML5, CSS3, JavaScript</p>
+                        <p style="font-size: 0.9rem; color: #888; margin-top: 10px;">Static web interface with modern UI</p>
+                    </div>
+                    <div class="arch-arrow"><i class="fas fa-arrow-right"></i></div>
+                    <div class="arch-block">
+                        <i class="fas fa-server"></i>
+                        <h3>API Layer</h3>
+                        <p>FastAPI (Python)</p>
+                        <p style="font-size: 0.9rem; color: #888; margin-top: 10px;">RESTful API proxy and orchestration</p>
+                    </div>
+                    <div class="arch-arrow"><i class="fas fa-arrow-right"></i></div>
+                    <div class="arch-block">
+                        <i class="fas fa-brain"></i>
+                        <h3>AI Backend</h3>
+                        <p>Stable Diffusion WebUI</p>
+                        <p style="font-size: 0.9rem; color: #888; margin-top: 10px;">Model execution and processing</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Features -->
+        <div class="slide slide-4">
+            <div class="content-card">
+                <h2 class="slide-title">Key Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-pencil-alt"></i>
+                        <h3>Text-to-Image</h3>
+                        <p>Generate stunning images from text descriptions using advanced Stable Diffusion models</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-exchange-alt"></i>
+                        <h3>Image-to-Image</h3>
+                        <p>Transform existing images with AI guidance, maintaining structure while changing style</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-file-alt"></i>
+                        <h3>Image-to-Text</h3>
+                        <p>Generate detailed descriptions of images using BLIP model for captioning</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-sliders-h"></i>
+                        <h3>Advanced Controls</h3>
+                        <p>Fine-tune generation with parameters like CFG scale, steps, and sampling methods</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-lock"></i>
+                        <h3>User Authentication</h3>
+                        <p>Secure login and signup system to protect user data and generated content</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-images"></i>
+                        <h3>Gallery Management</h3>
+                        <p>View, organize, and download your AI-generated artwork collection</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Tech Stack -->
+        <div class="slide slide-5">
+            <div class="content-card">
+                <h2 class="slide-title">Technology Stack</h2>
+                <div class="tech-grid">
+                    <div class="tech-item">
+                        <i class="fab fa-python"></i>
+                        <h4>Python</h4>
+                        <p style="color: #888; font-size: 0.9rem; margin-top: 5px;">Backend Language</p>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fas fa-bolt"></i>
+                        <h4>FastAPI</h4>
+                        <p style="color: #888; font-size: 0.9rem; margin-top: 5px;">Web Framework</p>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fab fa-html5"></i>
+                        <h4>HTML5/CSS3</h4>
+                        <p style="color: #888; font-size: 0.9rem; margin-top: 5px;">Frontend UI</p>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fab fa-js"></i>
+                        <h4>JavaScript</h4>
+                        <p style="color: #888; font-size: 0.9rem; margin-top: 5px;">Client Logic</p>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fas fa-brain"></i>
+                        <h4>Stable Diffusion</h4>
+                        <p style="color: #888; font-size: 0.9rem; margin-top: 5px;">Image Generation</p>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fas fa-eye"></i>
+                        <h4>BLIP</h4>
+                        <p style="color: #888; font-size: 0.9rem; margin-top: 5px;">Image Captioning</p>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fab fa-git-alt"></i>
+                        <h4>Git</h4>
+                        <p style="color: #888; font-size: 0.9rem; margin-top: 5px;">Version Control</p>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fas fa-cogs"></i>
+                        <h4>RESTful API</h4>
+                        <p style="color: #888; font-size: 0.9rem; margin-top: 5px;">Communication</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: How It Works -->
+        <div class="slide slide-6">
+            <div class="content-card">
+                <h2 class="slide-title">How It Works</h2>
+                <div class="workflow-steps">
+                    <div class="workflow-step">
+                        <div class="step-number">1</div>
+                        <div class="step-text">
+                            <h3>User Input</h3>
+                            <p>User enters a text prompt or uploads an image through the intuitive web interface</p>
+                        </div>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-number">2</div>
+                        <div class="step-text">
+                            <h3>API Processing</h3>
+                            <p>FastAPI backend receives the request and validates input parameters</p>
+                        </div>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-number">3</div>
+                        <div class="step-text">
+                            <h3>Model Execution</h3>
+                            <p>Request is forwarded to Stable Diffusion WebUI for AI model processing</p>
+                        </div>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-number">4</div>
+                        <div class="step-text">
+                            <h3>Image Generation</h3>
+                            <p>AI model generates or transforms the image based on the provided input</p>
+                        </div>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-number">5</div>
+                        <div class="step-text">
+                            <h3>Result Delivery</h3>
+                            <p>Generated image is returned to the frontend and displayed to the user</p>
+                        </div>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-number">6</div>
+                        <div class="step-text">
+                            <h3>Save & Download</h3>
+                            <p>Users can save the image to their gallery or download it to their device</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Demo/Features Showcase -->
+        <div class="slide slide-7">
+            <div class="content-card">
+                <h2 class="slide-title">Application Showcase</h2>
+                <div class="demo-showcase">
+                    <div class="demo-box">
+                        <i class="fas fa-palette"></i>
+                        <h3>Modern UI Design</h3>
+                        <p>Glass morphism effects, aurora backgrounds, and smooth animations create an immersive experience</p>
+                    </div>
+                    <div class="demo-box">
+                        <i class="fas fa-mobile-alt"></i>
+                        <h3>Fully Responsive</h3>
+                        <p>Works seamlessly across desktop, tablet, and mobile devices with adaptive layouts</p>
+                    </div>
+                    <div class="demo-box">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <h3>Real-time Generation</h3>
+                        <p>Live progress feedback and status updates during image generation process</p>
+                    </div>
+                    <div class="demo-box">
+                        <i class="fas fa-download"></i>
+                        <h3>Easy Export</h3>
+                        <p>One-click download of generated images in high quality formats</p>
+                    </div>
+                    <div class="demo-box">
+                        <i class="fas fa-history"></i>
+                        <h3>Generation History</h3>
+                        <p>Keep track of all your generated images with automatic gallery storage</p>
+                    </div>
+                    <div class="demo-box">
+                        <i class="fas fa-cog"></i>
+                        <h3>Customizable Settings</h3>
+                        <p>Adjust sampling methods, steps, guidance scale, and more for perfect results</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Thank You -->
+        <div class="slide slide-8">
+            <div class="thankyou-content">
+                <h1>Thank You!</h1>
+                <p class="subtitle">Questions & Discussion</p>
+                <div class="contact-info">
+                    <p><i class="fas fa-envelope"></i> Contact for more information</p>
+                    <p><i class="fab fa-github"></i> View project on GitHub</p>
+                    <p><i class="fas fa-globe"></i> Visit the live demo</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Controls -->
+    <div class="nav-controls">
+        <button class="nav-btn" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+        <div class="slide-counter">
+            <span id="currentSlide">1</span> / <span id="totalSlides">8</span>
+        </div>
+        <button class="nav-btn" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        document.getElementById('totalSlides').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            slides[currentSlide].classList.add('prev');
+            
+            currentSlide = (n + totalSlides) % totalSlides;
+            
+            slides.forEach((slide, index) => {
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                    slide.classList.remove('prev');
+                } else if (index < currentSlide) {
+                    slide.classList.add('prev');
+                } else {
+                    slide.classList.remove('prev');
+                }
+            });
+            
+            document.getElementById('currentSlide').textContent = currentSlide + 1;
+        }
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            showSlide(currentSlide + 1);
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            showSlide(currentSlide - 1);
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                showSlide(currentSlide + 1);
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                showSlide(currentSlide - 1);
+            }
+        });
+
+        // Touch/swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) {
+                showSlide(currentSlide + 1);
+            }
+            if (touchEndX > touchStartX + 50) {
+                showSlide(currentSlide - 1);
+            }
+        }
+    </script>
+</body>
+</html>

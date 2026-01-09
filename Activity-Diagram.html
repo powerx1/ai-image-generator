@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity Diagram - AI Image Web</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+        }
+
+        .diagram-container {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+        }
+
+        svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .legend {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .legend h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .legend-shape {
+            width: 40px;
+            height: 30px;
+            margin-right: 15px;
+            border: 2px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .oval {
+            border-radius: 50%;
+            background: #4facfe;
+        }
+
+        .rectangle {
+            background: #43e97b;
+        }
+
+        .diamond {
+            background: #fa709a;
+            transform: rotate(45deg);
+        }
+
+        .description {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .description h3 {
+            color: #1976d2;
+            margin-bottom: 15px;
+        }
+
+        .description ul {
+            margin-left: 20px;
+            line-height: 1.8;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Activity Diagram</h1>
+        <p class="subtitle">AI-Based Image Generator and Processor Use Case Flow</p>
+
+        <div class="diagram-container">
+            <svg width="900" height="1400" xmlns="http://www.w3.org/2000/svg">
+                <!-- Definitions -->
+                <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <polygon points="0 0, 10 3, 0 6" fill="#333" />
+                    </marker>
+                </defs>
+
+                <!-- Start -->
+                <ellipse cx="450" cy="30" rx="30" ry="20" fill="#4facfe" stroke="#333" stroke-width="2"/>
+                <text x="450" y="35" text-anchor="middle" font-size="12" font-weight="bold">Start</text>
+
+                <!-- Arrow -->
+                <line x1="450" y1="50" x2="450" y2="80" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                <!-- Register/Login -->
+                <rect x="350" y="80" width="200" height="60" rx="30" fill="#43e97b" stroke="#333" stroke-width="2"/>
+                <text x="450" y="105" text-anchor="middle" font-size="14" font-weight="bold">Register/Login</text>
+                <text x="450" y="125" text-anchor="middle" font-size="12">Authentication</text>
+
+                <!-- Arrow -->
+                <line x1="450" y1="140" x2="450" y2="170" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                <!-- Decision: Authentication Success? -->
+                <g transform="translate(450, 200) rotate(45)">
+                    <rect x="-50" y="-50" width="100" height="100" fill="#fa709a" stroke="#333" stroke-width="2"/>
+                </g>
+                <text x="450" y="195" text-anchor="middle" font-size="12" font-weight="bold">Auth</text>
+                <text x="450" y="210" text-anchor="middle" font-size="12" font-weight="bold">Success?</text>
+
+                <!-- No - back to login -->
+                <line x1="380" y1="200" x2="300" y2="200" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                <text x="340" y="195" text-anchor="middle" font-size="11" fill="#d32f2f">No</text>
+                <line x1="300" y1="200" x2="300" y2="110" stroke="#333" stroke-width="2"/>
+                <line x1="300" y1="110" x2="350" y2="110" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                <!-- Yes - continue -->
+                <line x1="450" y1="270" x2="450" y2="310" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                <text x="465" y="290" text-anchor="start" font-size="11" fill="#2e7d32">Yes</text>
+
+                <!-- Decision: Select Activity -->
+                <g transform="translate(450, 340) rotate(45)">
+                    <rect x="-60" y="-60" width="120" height="120" fill="#ffd93d" stroke="#333" stroke-width="2"/>
+                </g>
+                <text x="450" y="330" text-anchor="middle" font-size="12" font-weight="bold">Select</text>
+                <text x="450" y="345" text-anchor="middle" font-size="12" font-weight="bold">Activity</text>
+
+                <!-- Text-to-Image Path -->
+                <line x1="380" y1="340" x2="200" y2="340" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                <text x="290" y="335" text-anchor="middle" font-size="10">Text2Img</text>
+                <rect x="100" y="320" width="100" height="40" rx="5" fill="#43e97b" stroke="#333" stroke-width="2"/>
+                <text x="150" y="345" text-anchor="middle" font-size="12">Enter Prompt</text>
+
+                <line x1="150" y1="360" x2="150" y2="500" stroke="#333" stroke-width="2"/>
+                <line x1="150" y1="500" x2="350" y2="500" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                <!-- Image-to-Image Path -->
+                <line x1="450" y1="425" x2="450" y2="460" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                <text x="465" y="445" text-anchor="start" font-size="10">Img2Img</text>
+                <rect x="400" y="460" width="100" height="40" rx="5" fill="#43e97b" stroke="#333" stroke-width="2"/>
+                <text x="450" y="485" text-anchor="middle" font-size="12">Upload Image</text>
+
+                <line x1="450" y1="500" x2="450" y2="520" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                <rect x="380" y="520" width="140" height="40" rx="5" fill="#43e97b" stroke="#333" stroke-width="2"/>
+                <text x="450" y="545" text-anchor="middle" font-size="12">Set Parameters</text>
+
+                <line x1="450" y1="560" x2="450" y2="580" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                <!-- Image-to-Text Path -->
+                <line x1="520" y1="340" x2="700" y2="340" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                <text x="610" y="335" text-anchor="middle" font-size="10">Img2Text</text>
+                <rect x="650" y="320" width="100" height="40" rx="5" fill="#43e97b" stroke="#333" stroke-width="2"/>
+                <text x="700" y="345" text-anchor="middle" font-size="12">Upload Image</text>
+
+                <line x1="700" y1="360" x2="700" y2="580" stroke="#333" stroke-width="2"/>
+                <line x1="700" y1="580" x2="550" y2="580" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                <!-- Process Request -->
+                <rect x="350" y="580" width="200" height="60" rx="5" fill="#9d50bb" stroke="#333" stroke-width="2"/>
+                <text x="450" y="605" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Process Request</text>
+                <text x="450" y="625" text-anchor="middle" font-size="12" fill="white">API → AI Model</text>
+
+                <!-- Arrow -->
+                <line x1="450" y1="640" x2="450" y2="670" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                <!-- Decision: Processing Success? -->
+                <g transform="translate(450, 700) rotate(45)">
+                    <rect x="-50" y="-50" width="100" height="100" fill="#fa709a" stroke="#333" stroke-width="2"/>
+                </g>
+                <text x="450" y="695" text-anchor="middle" font-size="12" font-weight="bold">Process</text>
+                <text x="450" y="710" text-anchor="middle" font-size="12" font-weight="bold">Success?</text>
+
+                <!-- No - Show Error -->
+                <line x1="520" y1="700" x2="600" y2="700" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                <text x="560" y="695" text-anchor="middle" font-size="11" fill="#d32f2f">No</text>
+                <rect x="600" y="680" width="120" height="40" rx="5" fill="#ff6b6b" stroke="#333" stroke-width="2"/>
+                <text x="660" y="705" text-anchor="middle" font-size="12" fill="white">Show Error</text>
+
+                <line x1="660" y1="720" x2="660" y2="1100" stroke="#333" stroke-width="2"/>
+                <line x1="660" y1="1100" x2="550" y2="1100" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                <!-- Yes - Display Result -->
+                <line x1="450" y1="770" x2="450" y2="810" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                <text x="465" y="790" text-anchor="start" font-size="11" fill="#2e7d32">Yes</text>
+
+                <rect x="350" y="810" width="200" height="60" rx="5" fill="#43e97b" stroke="#333" stroke-width="2"/>
+                <text x="450" y="835" text-anchor="middle" font-size="14" font-weight="bold">Display Result</text>
+                <text x="450" y="855" text-anchor="middle" font-size="12">Show Generated Output</text>
+
+                <!-- Arrow -->
+                <line x1="450" y1="870" x2="450" y2="900" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                <!-- Preview Image -->
+                <rect x="350" y="900" width="200" height="60" rx="5" fill="#43e97b" stroke="#333" stroke-width="2"/>
+                <text x="450" y="925" text-anchor="middle" font-size="14" font-weight="bold">Preview Image</text>
+                <text x="450" y="945" text-anchor="middle" font-size="12">View in Gallery</text>
+
+                <!-- Arrow -->
+                <line x1="450" y1="960" x2="450" y2="990" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                <!-- Decision: Save Image? -->
+                <g transform="translate(450, 1020) rotate(45)">
+                    <rect x="-50" y="-50" width="100" height="100" fill="#ffd93d" stroke="#333" stroke-width="2"/>
+                </g>
+                <text x="450" y="1015" text-anchor="middle" font-size="12" font-weight="bold">Save/</text>
+                <text x="450" y="1030" text-anchor="middle" font-size="12" font-weight="bold">Download?</text>
+
+                <!-- Yes - Save -->
+                <line x1="380" y1="1020" x2="280" y2="1020" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                <text x="330" y="1015" text-anchor="middle" font-size="11" fill="#2e7d32">Yes</text>
+                <rect x="180" y="1000" width="100" height="40" rx="5" fill="#6c5ce7" stroke="#333" stroke-width="2"/>
+                <text x="230" y="1025" text-anchor="middle" font-size="12" fill="white">Save to DB</text>
+
+                <line x1="230" y1="1040" x2="230" y2="1100" stroke="#333" stroke-width="2"/>
+                <line x1="230" y1="1100" x2="350" y2="1100" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                <!-- No/Continue -->
+                <line x1="450" y1="1090" x2="450" y2="1100" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                <text x="465" y="1085" text-anchor="start" font-size="11" fill="#666">No</text>
+
+                <!-- Decision: Continue? -->
+                <g transform="translate(450, 1130) rotate(45)">
+                    <rect x="-50" y="-50" width="100" height="100" fill="#ffd93d" stroke="#333" stroke-width="2"/>
+                </g>
+                <text x="450" y="1125" text-anchor="middle" font-size="12" font-weight="bold">Generate</text>
+                <text x="450" y="1140" text-anchor="middle" font-size="12" font-weight="bold">More?</text>
+
+                <!-- Yes - back to select activity -->
+                <line x1="520" y1="1130" x2="600" y2="1130" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                <text x="560" y="1125" text-anchor="middle" font-size="11" fill="#2e7d32">Yes</text>
+                <line x1="600" y1="1130" x2="600" y2="340" stroke="#333" stroke-width="2"/>
+                <line x1="600" y1="340" x2="520" y2="340" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                <!-- No - End -->
+                <line x1="450" y1="1200" x2="450" y2="1240" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                <text x="465" y="1220" text-anchor="start" font-size="11" fill="#d32f2f">No</text>
+
+                <!-- Logout -->
+                <rect x="350" y="1240" width="200" height="60" rx="30" fill="#43e97b" stroke="#333" stroke-width="2"/>
+                <text x="450" y="1270" text-anchor="middle" font-size="14" font-weight="bold">Logout</text>
+                <text x="450" y="1290" text-anchor="middle" font-size="12">End Session</text>
+
+                <!-- Arrow -->
+                <line x1="450" y1="1300" x2="450" y2="1330" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                <!-- End -->
+                <ellipse cx="450" cy="1350" rx="30" ry="20" fill="#ff6b6b" stroke="#333" stroke-width="2"/>
+                <text x="450" y="1355" text-anchor="middle" font-size="12" font-weight="bold">End</text>
+            </svg>
+        </div>
+
+        <div class="legend">
+            <h3>Legend</h3>
+            <div class="legend-item">
+                <div class="legend-shape oval"></div>
+                <span><strong>Oval:</strong> Start/End points</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-shape rectangle"></div>
+                <span><strong>Rectangle (Rounded):</strong> Activities/Actions</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-shape diamond"></div>
+                <span><strong>Diamond:</strong> Decision points</span>
+            </div>
+            <div class="legend-item">
+                <div style="width: 40px; height: 2px; background: #333; margin-right: 15px;"></div>
+                <span><strong>Arrow:</strong> Flow direction</span>
+            </div>
+        </div>
+
+        <div class="description">
+            <h3>Activity Flow Description</h3>
+            <ul>
+                <li><strong>Authentication Phase:</strong> User registers or logs in to access the system</li>
+                <li><strong>Activity Selection:</strong> User chooses between Text-to-Image, Image-to-Image, or Image-to-Text</li>
+                <li><strong>Input Phase:</strong> User provides necessary input (text prompt or image upload)</li>
+                <li><strong>Processing Phase:</strong> System forwards request to AI model via API</li>
+                <li><strong>Result Display:</strong> Generated output is displayed to user</li>
+                <li><strong>Preview & Save:</strong> User can preview and optionally save/download the result</li>
+                <li><strong>Iteration:</strong> User can generate more images or end session</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

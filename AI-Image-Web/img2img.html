@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>AI Image Generator — Image→Image</title>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet" href="img2img-styles.css">
+    </head>
+    <body>
+        <!-- Animated Background -->
+        <div class="bg-aurora"></div>
+        <div class="particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="brand">
+                    <div class="logo">AI</div>
+                    <div class="brand-text">
+                        <span class="brand-title">Image Studio</span>
+                        <span class="brand-subtitle">Img2Img Generation</span>
+                    </div>
+                </div>
+                <nav class="nav-links">
+                    <a href="index.html" class="nav-link">
+                        <i class="fas fa-images"></i>
+                        <span>Txt2Img</span>
+                    </a>
+                    <a href="img2img.html" class="nav-link active">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Img2Img</span>
+                    </a>
+                    <a href="img2text.html" class="nav-link">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Img2Text</span>
+                    </a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-container">
+            <!-- Controls Panel -->
+            <aside class="card controls-card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fas fa-sliders-h"></i>
+                        <h2>Generation Settings</h2>
+                    </div>
+                    <span class="badge badge-primary">
+                        <i class="fas fa-images"></i>
+                        Img2Img
+                    </span>
+                </div>
+                <div class="card-body">
+                    <div class="controls-scroll">
+                        <!-- Prompt -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-pencil-alt"></i>
+                                Prompt
+                            </label>
+                            <textarea id="prompt" class="form-control" placeholder="Describe the transformation you want, e.g. 'A dramatic landscape with volumetric lighting, cinematic colors'"></textarea>
+                        </div>
+
+                        <!-- Negative Prompt -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-ban"></i>
+                                Negative Prompt
+                            </label>
+                            <input id="negative_prompt" class="form-control" placeholder="What to avoid (optional)">
+                        </div>
+
+                        <!-- Image Upload -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-upload"></i>
+                                Source Image
+                            </label>
+                            <div class="file-upload">
+                                <div class="file-upload-area" id="dropzone">
+                                    <div class="file-upload-icon">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                    </div>
+                                    <div class="file-upload-text">Drop image here or click to upload</div>
+                                    <div class="file-upload-hint">Supports JPG, PNG, WebP</div>
+                                    <input type="file" id="init_image" class="file-input-hidden" accept="image/*">
+                                </div>
+                                <div class="file-preview" id="file-preview">
+                                    <img id="preview-img" src="" alt="Preview">
+                                    <div class="file-preview-info">
+                                        <div class="file-preview-name" id="preview-name">image.png</div>
+                                        <div class="file-preview-size" id="preview-size">2.4 MB</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Denoising Strength -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-adjust"></i>
+                                Denoising Strength
+                            </label>
+                            <div class="range-container">
+                                <input type="range" id="denoising_strength" class="range-slider" min="0" max="1" step="0.01" value="0.75">
+                                <span class="range-value" id="denoising-value">0.75</span>
+                            </div>
+                        </div>
+
+                        <!-- Steps -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-shoe-prints"></i>
+                                Steps
+                            </label>
+                            <div class="range-container">
+                                <input type="range" id="steps" class="range-slider" min="1" max="100" value="30">
+                                <span class="range-value" id="stepsVal">30</span>
+                            </div>
+                        </div>
+
+                        <!-- CFG Scale -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-balance-scale"></i>
+                                CFG Scale
+                            </label>
+                            <div class="range-container">
+                                <input type="range" id="cfg_scale" class="range-slider" min="1" max="20" step="0.5" value="7">
+                                <span class="range-value" id="cfgVal">7</span>
+                            </div>
+                        </div>
+
+                        <!-- Dimensions -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-expand-alt"></i>
+                                Dimensions
+                            </label>
+                            <div class="form-row cols-2">
+                                <select id="width" class="form-control">
+                                    <option value="512">512px</option>
+                                    <option value="640">640px</option>
+                                    <option value="768">768px</option>
+                                    <option value="1024">1024px</option>
+                                </select>
+                                <select id="height" class="form-control">
+                                    <option value="512">512px</option>
+                                    <option value="640">640px</option>
+                                    <option value="768">768px</option>
+                                    <option value="1024">1024px</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Sampler & Mode -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-random"></i>
+                                Sampler & Mode
+                            </label>
+                            <div class="form-row cols-2">
+                                <select id="sampler_name" class="form-control">
+                                    <option>Euler a</option>
+                                    <option>Euler</option>
+                                    <option>DDIM</option>
+                                    <option>PLMS</option>
+                                    <option>DPM++ 2M</option>
+                                    <option selected>DPM++ 2M Karras</option>
+                                    <option>DPM++ SDE</option>
+                                </select>
+                                <select id="mode" class="form-control">
+                                    <option value="txt2img">Text → Image</option>
+                                    <option value="img2img" selected>Image → Image</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Seed, Batch, Iterations -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-cog"></i>
+                                Advanced Options
+                            </label>
+                            <div class="form-row cols-3">
+                                <div>
+                                    <input id="seed" class="form-control" type="number" value="-1" placeholder="Seed">
+                                </div>
+                                <div>
+                                    <input id="batch_size" class="form-control" type="number" value="1" min="1" max="8" placeholder="Batch">
+                                </div>
+                                <div>
+                                    <input id="n_iter" class="form-control" type="number" value="1" min="1" max="8" placeholder="Iter">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="btn-group">
+                            <button id="generate" class="btn btn-primary">
+                                <i class="fas fa-magic"></i>
+                                Generate
+                            </button>
+                            <button id="clear" class="btn btn-secondary">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+
+                        <a id="download_link" href="#">
+                            <i class="fas fa-download"></i>
+                            Download Image
+                        </a>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Preview Panel -->
+            <section class="card preview-card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fas fa-eye"></i>
+                        <h2>Generated Results</h2>
+                    </div>
+                    <span class="badge">
+                        <i class="fas fa-history"></i>
+                        History
+                    </span>
+                </div>
+                <div class="preview-body">
+                    <div id="gallery" class="preview-grid">
+                        <div class="preview-empty" id="empty">
+                            <div class="preview-empty-icon">
+                                <i class="fas fa-image"></i>
+                            </div>
+                            <div class="preview-empty-text">No images yet</div>
+                            <div class="preview-empty-hint">Upload an image and click Generate to transform it</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Loading Spinner -->
+        <div class="spinner-overlay" id="spinner">
+            <div class="spinner-content">
+                <div class="spinner-ring"></div>
+                <div class="spinner-text">Generating your image...</div>
+                <div class="spinner-hint">This may take a moment</div>
+            </div>
+        </div>
+
+        <script src="control.js" defer></script>
+        <script>
+            // Enhanced interactions
+            document.addEventListener('DOMContentLoaded', () => {
+                // Denoising slider value display
+                const slider = document.getElementById('denoising_strength');
+                const valueDisplay = document.getElementById('denoising-value');
+                if (slider && valueDisplay) {
+                    slider.addEventListener('input', () => {
+                        valueDisplay.textContent = parseFloat(slider.value).toFixed(2);
+                    });
+                }
+
+                // Steps slider value display
+                const stepsSlider = document.getElementById('steps');
+                const stepsDisplay = document.getElementById('stepsVal');
+                if (stepsSlider && stepsDisplay) {
+                    stepsSlider.addEventListener('input', () => {
+                        stepsDisplay.textContent = stepsSlider.value;
+                    });
+                }
+
+                // CFG Scale slider value display
+                const cfgSlider = document.getElementById('cfg_scale');
+                const cfgDisplay = document.getElementById('cfgVal');
+                if (cfgSlider && cfgDisplay) {
+                    cfgSlider.addEventListener('input', () => {
+                        cfgDisplay.textContent = cfgSlider.value;
+                    });
+                }
+
+                // Redirect to index.html when mode changes to txt2img
+                const modeSelect = document.getElementById('mode');
+                if (modeSelect) {
+                    modeSelect.addEventListener('change', (e) => {
+                        if (e.target.value === 'txt2img') {
+                            window.location.href = 'index.html';
+                        }
+                    });
+                }
+
+                // Drag and drop for file upload
+                const dropzone = document.getElementById('dropzone');
+                const fileInput = document.getElementById('init_image');
+                const filePreview = document.getElementById('file-preview');
+                const previewImg = document.getElementById('preview-img');
+                const previewName = document.getElementById('preview-name');
+                const previewSize = document.getElementById('preview-size');
+
+                if (dropzone && fileInput) {
+                    // Click to open file picker
+                    dropzone.addEventListener('click', () => {
+                        fileInput.click();
+                    });
+
+                    ['dragenter', 'dragover'].forEach(event => {
+                        dropzone.addEventListener(event, (e) => {
+                            e.preventDefault();
+                            dropzone.classList.add('dragover');
+                        });
+                    });
+
+                    ['dragleave', 'drop'].forEach(event => {
+                        dropzone.addEventListener(event, (e) => {
+                            e.preventDefault();
+                            dropzone.classList.remove('dragover');
+                        });
+                    });
+
+                    dropzone.addEventListener('drop', (e) => {
+                        const files = e.dataTransfer.files;
+                        if (files.length > 0) {
+                            fileInput.files = files;
+                            showPreview(files[0]);
+                        }
+                    });
+
+                    fileInput.addEventListener('change', (e) => {
+                        if (e.target.files.length > 0) {
+                            showPreview(e.target.files[0]);
+                        }
+                    });
+
+                    function showPreview(file) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            previewImg.src = e.target.result;
+                            previewName.textContent = file.name;
+                            previewSize.textContent = formatFileSize(file.size);
+                            filePreview.classList.add('active');
+                        };
+                        reader.readAsDataURL(file);
+                    }
+
+                    function formatFileSize(bytes) {
+                        if (bytes < 1024) return bytes + ' B';
+                        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+                        return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>

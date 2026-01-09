@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Questionnaire - AI Image Web</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+        }
+
+        .form-section {
+            background: white;
+            border: 2px dashed #667eea;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+        }
+
+        .section-title {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1rem;
+            min-width: 220px;
+        }
+
+        .form-input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #333;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: 2px solid #333;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .checkbox-option input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            border: 2px solid #333;
+        }
+
+        .checkbox-option label {
+            font-size: 1rem;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .strength-indicator {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex: 1;
+        }
+
+        .strength-label {
+            font-weight: 600;
+            color: #333;
+            padding: 8px 16px;
+            border: 2px solid #333;
+            border-radius: 5px;
+            background: white;
+        }
+
+        .intro {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .intro h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .intro p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .submit-section {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .submit-btn {
+            padding: 15px 60px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
+        }
+
+        .summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .summary h3 {
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .summary p {
+            color: white;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 Project Questionnaire</h1>
+        <p class="subtitle">AI-Based Image Generator and Processor</p>
+
+        <div class="intro">
+            <h2>Interactive Form Questionnaire</h2>
+            <p>This questionnaire captures the requirements, activities, and system design elements of the AI Image Web project through interactive forms that reflect the actual user interface.</p>
+        </div>
+
+        <!-- Section 1: User Registration / Login -->
+        <div class="form-section">
+            <h2 class="section-title">User Registration / Login</h2>
+            
+            <div class="form-group">
+                <label class="form-label">Username:</label>
+                <input type="text" class="form-input" placeholder="Enter username">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Email:</label>
+                <input type="email" class="form-input" placeholder="Enter email address">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Password:</label>
+                <input type="password" class="form-input" placeholder="Enter password">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Confirm Password:</label>
+                <input type="password" class="form-input" placeholder="Re-enter password">
+            </div>
+
+            <div class="button-group">
+                <button class="btn">Register</button>
+                <button class="btn">Login</button>
+            </div>
+        </div>
+
+        <!-- Section 2: Login Preferences -->
+        <div class="form-section">
+            <h2 class="section-title">Login Preferences</h2>
+            
+            <div class="form-group">
+                <label class="form-label">Remember Me:</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="rememberYes">
+                        <label for="rememberYes">Yes</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="rememberNo">
+                        <label for="rememberNo">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Login with:</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="loginEmail">
+                        <label for="loginEmail">Email</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="loginUsername">
+                        <label for="loginUsername">Username</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Receive login alert:</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="alertYes">
+                        <label for="alertYes">Yes</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="alertNo">
+                        <label for="alertNo">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn">Submit</button>
+            </div>
+        </div>
+
+        <!-- Section 3: Security Feedback -->
+        <div class="form-section">
+            <h2 class="section-title">Security Feedback</h2>
+            
+            <div class="form-group">
+                <label class="form-label">Password Strength Level:</label>
+                <div class="strength-indicator">
+                    <span class="strength-label">Weak</span>
+                    <span class="strength-label">Medium</span>
+                    <span class="strength-label">Strong</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Do you want 2FA enabled?</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="2faYes">
+                        <label for="2faYes">Yes</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="2faNo">
+                        <label for="2faNo">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Allow session auto-login?</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="autoLoginYes">
+                        <label for="autoLoginYes">Yes</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="autoLoginNo">
+                        <label for="autoLoginNo">No</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Text-to-Image Generation -->
+        <div class="form-section">
+            <h2 class="section-title">Text-to-Image Generation</h2>
+            
+            <div class="form-group">
+                <label class="form-label">Prompt:</label>
+                <input type="text" class="form-input" placeholder="Describe the image you want to generate">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Negative Prompt:</label>
+                <input type="text" class="form-input" placeholder="What to avoid in the image">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Steps:</label>
+                <input type="number" class="form-input" placeholder="20-50" value="30">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">CFG Scale:</label>
+                <input type="number" class="form-input" placeholder="1-30" value="7" step="0.5">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Sampler Method:</label>
+                <select class="form-input">
+                    <option>Euler a</option>
+                    <option>DPM++ 2M Karras</option>
+                    <option>DDIM</option>
+                    <option>LMS</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Width x Height:</label>
+                <div style="display: flex; gap: 10px; flex: 1;">
+                    <input type="number" class="form-input" placeholder="Width" value="512">
+                    <span style="font-size: 1.5rem;">×</span>
+                    <input type="number" class="form-input" placeholder="Height" value="512">
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn">Generate Image</button>
+            </div>
+        </div>
+
+        <!-- Section 5: Image-to-Image Processing -->
+        <div class="form-section">
+            <h2 class="section-title">Image-to-Image Processing</h2>
+            
+            <div class="form-group">
+                <label class="form-label">Upload Image:</label>
+                <input type="file" class="form-input" accept="image/*">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Transformation Prompt:</label>
+                <input type="text" class="form-input" placeholder="Describe how to transform the image">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Denoising Strength:</label>
+                <input type="range" min="0" max="1" step="0.05" value="0.75" style="flex: 1;">
+                <span style="min-width: 50px; text-align: center;">0.75</span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Processing Steps:</label>
+                <input type="number" class="form-input" placeholder="20-50" value="30">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Resize Mode:</label>
+                <select class="form-input">
+                    <option>Just Resize</option>
+                    <option>Crop and Resize</option>
+                    <option>Resize and Fill</option>
+                    <option>Just Resize (latent upscale)</option>
+                </select>
+            </div>
+
+            <div class="button-group">
+                <button class="btn">Process Image</button>
+            </div>
+        </div>
+
+        <!-- Section 6: Image-to-Text Captioning -->
+        <div class="form-section">
+            <h2 class="section-title">Image-to-Text Captioning</h2>
+            
+            <div class="form-group">
+                <label class="form-label">Upload Image:</label>
+                <input type="file" class="form-input" accept="image/*">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Question (Optional):</label>
+                <input type="text" class="form-input" placeholder="Ask a specific question about the image">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Max Caption Length:</label>
+                <input type="number" class="form-input" placeholder="50-200" value="100">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Quick Prompts:</label>
+                <div class="button-group" style="flex: 1; justify-content: flex-start; margin: 0;">
+                    <button class="btn" style="padding: 8px 20px; font-size: 0.9rem;">Describe</button>
+                    <button class="btn" style="padding: 8px 20px; font-size: 0.9rem;">Objects</button>
+                    <button class="btn" style="padding: 8px 20px; font-size: 0.9rem;">Mood</button>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn">Generate Caption</button>
+            </div>
+        </div>
+
+        <!-- Section 7: Gallery Management -->
+        <div class="form-section">
+            <h2 class="section-title">Gallery Management & Storage</h2>
+            
+            <div class="form-group">
+                <label class="form-label">Search Gallery:</label>
+                <input type="text" class="form-input" placeholder="Search by prompt or date">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Filter by Type:</label>
+                <select class="form-input">
+                    <option>All Images</option>
+                    <option>Text-to-Image</option>
+                    <option>Image-to-Image</option>
+                    <option>Image-to-Text</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Sort by:</label>
+                <select class="form-input">
+                    <option>Date (Newest First)</option>
+                    <option>Date (Oldest First)</option>
+                    <option>File Size</option>
+                    <option>Dimensions</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Actions:</label>
+                <div class="button-group" style="flex: 1; justify-content: flex-start; margin: 0;">
+                    <button class="btn" style="padding: 8px 20px; font-size: 0.9rem;">View All</button>
+                    <button class="btn" style="padding: 8px 20px; font-size: 0.9rem;">Download</button>
+                    <button class="btn" style="padding: 8px 20px; font-size: 0.9rem;">Delete</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 8: API Configuration -->
+        <div class="form-section">
+            <h2 class="section-title">API & Backend Configuration</h2>
+            
+            <div class="form-group">
+                <label class="form-label">Stable Diffusion URL:</label>
+                <input type="text" class="form-input" placeholder="http://127.0.0.1:7861" value="http://127.0.0.1:7861">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Request Timeout (seconds):</label>
+                <input type="number" class="form-input" placeholder="60-300" value="120">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">API Key (Optional):</label>
+                <input type="password" class="form-input" placeholder="Enter API key if required">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Enable Error Logging:</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="logYes" checked>
+                        <label for="logYes">Yes</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="logNo">
+                        <label for="logNo">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn">Save Configuration</button>
+                <button class="btn">Test Connection</button>
+            </div>
+        </div>
+
+        <!-- Submit Section -->
+        <div class="submit-section">
+            <button class="submit-btn">Submit Complete Questionnaire</button>
+        </div>
+
+        <div class="summary">
+            <h3>Questionnaire Summary</h3>
+            <p>This interactive questionnaire captures <strong>8 major functional areas</strong> of the AI Image Web system, with each section containing at least <strong>2 core activities</strong>. The form-based design reflects the actual user interface and interactions, providing a comprehensive view of system requirements and user workflows.</p>
+        </div>
+    </div>
+</body>
+</html>

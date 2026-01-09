@@ -1,0 +1,214 @@
+i<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>AI Image to Text - BLIP</title>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet" href="img2text-styles.css">
+    </head>
+    <body>
+        <!-- Animated Background -->
+        <div class="bg-aurora"></div>
+        <div class="particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="brand">
+                    <div class="logo">AI</div>
+                    <div class="brand-text">
+                        <span class="brand-title">AI Image to Text</span>
+                        <span class="brand-subtitle">Powered by BLIP</span>
+                    </div>
+                </div>
+                <nav class="nav-links">
+                    <a href="index.html" class="nav-link">
+                        <i class="fas fa-images"></i>
+                        <span>Txt2Img</span>
+                    </a>
+                    <a href="img2img.html" class="nav-link">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Img2Img</span>
+                    </a>
+                    <a href="img2text.html" class="nav-link active">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Img2Text</span>
+                    </a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-container">
+            <!-- Controls Panel -->
+            <aside class="card controls-card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fas fa-eye"></i>
+                        <h2>Analyze Image</h2>
+                    </div>
+                    <span class="badge badge-primary">
+                        <i class="fas fa-brain"></i>
+                        BLIP
+                    </span>
+                </div>
+                <div class="card-body">
+                    <div class="controls-scroll">
+                        <!-- Image Upload -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-image"></i>
+                                Upload Image
+                            </label>
+                            <div class="file-upload-wrapper">
+                                <input type="file" id="input_image" accept="image/*" class="file-input">
+                                <label for="input_image" class="file-upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Click to upload or drag & drop</span>
+                                    <small>Supports JPG, PNG, WEBP</small>
+                                </label>
+                            </div>
+                            <div id="preview-container" class="preview-container" style="display: none;">
+                                <img id="image-preview" class="image-preview" alt="Preview">
+                                <button id="clear-image" class="btn-clear">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Question/Prompt -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-question-circle"></i>
+                                Question / Prompt
+                            </label>
+                            <textarea 
+                                id="question" 
+                                class="form-control" 
+                                rows="3"
+                                placeholder="Ask a question about the image or leave blank for general description..."
+                            >Describe this image in detail.</textarea>
+                            <div class="quick-prompts">
+                                <button class="quick-prompt-btn" data-prompt="Describe this image in detail.">
+                                    <i class="fas fa-info-circle"></i> Describe
+                                </button>
+                                <button class="quick-prompt-btn" data-prompt="What objects are in this image?">
+                                    <i class="fas fa-cube"></i> Objects
+                                </button>
+                                <button class="quick-prompt-btn" data-prompt="What is the main subject of this image?">
+                                    <i class="fas fa-bullseye"></i> Subject
+                                </button>
+                                <button class="quick-prompt-btn" data-prompt="What emotions or mood does this image convey?">
+                                    <i class="fas fa-heart"></i> Mood
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Max Length -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-align-left"></i>
+                                Max Length
+                                <span class="value-display" id="max_length_display">512</span>
+                            </label>
+                            <input 
+                                type="range" 
+                                id="max_length" 
+                                class="slider" 
+                                min="100" 
+                                max="1024" 
+                                value="512" 
+                                step="50"
+                            >
+                            <div class="slider-labels">
+                                <span>100</span>
+                                <span>1024</span>
+                            </div>
+                        </div>
+
+                        <!-- Generate Button -->
+                        <button id="analyze" class="btn btn-primary btn-generate">
+                            <i class="fas fa-play"></i>
+                            <span>Analyze Image</span>
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Result Display -->
+            <section class="card result-card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fas fa-file-alt"></i>
+                        <h2>Generated Text</h2>
+                    </div>
+                </div>
+                <div class="card-body result-body">
+                    <div id="loader" class="loader-container" style="display: none;">
+                        <div class="loader"></div>
+                        <p class="loader-text">Analyzing image with MiniCPM-o...</p>
+                    </div>
+                    
+                    <div id="result-content" class="result-content" style="display: none;">
+                        <div class="result-header">
+                            <div class="result-info">
+                                <i class="fas fa-check-circle success-icon"></i>
+                                <span>Analysis Complete</span>
+                            </div>
+                            <button id="copy-text" class="btn btn-secondary btn-copy">
+                                <i class="fas fa-copy"></i>
+                                <span>Copy Text</span>
+                            </button>
+                        </div>
+                        
+                        <div class="text-result-container">
+                            <div class="text-box">
+                                <p id="result-text" class="result-text"></p>
+                            </div>
+                        </div>
+
+                        <div class="result-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-question-circle"></i>
+                                <span id="result-question"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="placeholder" class="placeholder">
+                        <div class="placeholder-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h3>Ready to Analyze</h3>
+                        <p>Upload an image and click "Analyze Image" to generate a text description</p>
+                        <div class="features-list">
+                            <div class="feature-item">
+                                <i class="fas fa-brain"></i>
+                                <span>Advanced AI Vision</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-comments"></i>
+                                <span>Natural Language</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-bolt"></i>
+                                <span>Fast Processing</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <script src="img2text.js"></script>
+    </body>
+</html>
