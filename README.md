@@ -51,7 +51,7 @@ The application includes three main pages:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/ai-image-generator.git
+git clone https://github.com/powerx1/ai-image-generator.git
 cd ai-image-generator
 ```
 
