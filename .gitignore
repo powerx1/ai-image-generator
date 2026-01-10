@@ -51,6 +51,12 @@ AI-Image-Web/output/
 stable-diffusion-webui/outputs/
 stable-diffusion-webui/log/
 
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+AI-Image-Web/users.db
+
 # Cache files
 *.cache
 .cache/

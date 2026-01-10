@@ -6,3 +6,5 @@ torchvision>=0.15.0
 transformers>=4.36.0
 pillow>=10.0.0
 python-multipart>=0.0.5
+# For password hashing (optional, using built-in hashlib for now)
+# bcrypt>=4.0.0

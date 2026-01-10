@@ -112,8 +112,8 @@ async function handleLogin(e) {
     const remember = document.getElementById('remember').checked;
     
     // Validate
-    if (!validateEmail(email)) {
-        showError('email', 'Please enter a valid email address');
+    if (!email || email.length < 3) {
+        showError('email', 'Please enter a valid username or email');
         return;
     }
     
@@ -130,26 +130,38 @@ async function handleLogin(e) {
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
     
     try {
-        // Simulate API call
-        await simulateAPICall(1500);
+        // API call to login endpoint
+        const formData = new FormData();
+        formData.append('username', email);
+        formData.append('password', password);
         
-        // Store auth token (in real app, this would come from server)
-        if (remember) {
-            localStorage.setItem('authToken', 'demo-token-' + Date.now());
+        const response = await fetch('http://127.0.0.1:8000/login', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success && data.user && data.user.session_token) {
+            // Store auth token
+            const storage = remember ? localStorage : sessionStorage;
+            storage.setItem('session_token', data.user.session_token);
+            storage.setItem('username', data.user.username);
+            storage.setItem('email', data.user.email);
+            
+            // Show success
+            showNotification('Login successful! Redirecting...', 'success');
+            
+            // Redirect
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1000);
         } else {
-            sessionStorage.setItem('authToken', 'demo-token-' + Date.now());
+            throw new Error(data.message || 'Login failed');
         }
         
-        // Show success
-        showNotification('Login successful! Redirecting...', 'success');
-        
-        // Redirect
-        setTimeout(() => {
-            window.location.href = 'index.html';
-        }, 1000);
-        
     } catch (error) {
-        showNotification('Login failed. Please check your credentials.', 'error');
+        showNotification(error.message || 'Login failed. Please check your credentials.', 'error');
         form.classList.remove('loading');
         submitBtn.innerHTML = originalText;
     }
@@ -198,6 +210,43 @@ async function handleSignup(e) {
     const originalText = submitBtn.innerHTML;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
     
+    try {
+        // Generate username from email
+        const username = email.split('@')[0].toLowerCase();
+        const fullName = `${firstName.trim()} ${lastName.trim()}`;
+        
+        // API call to register endpoint
+        const formData = new FormData();
+        formData.append('username', username);
+        formData.append('email', email);
+        formData.append('password', password);
+        formData.append('full_name', fullName);
+        
+        const response = await fetch('http://127.0.0.1:8000/register', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Show success
+            showNotification('Account created successfully! Redirecting to login...', 'success');
+            
+            // Redirect to login
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 1500);
+        } else {
+            throw new Error(data.message || 'Registration failed');
+        }
+        
+    } catch (error) {
+        showNotification(error.message || 'Registration failed. Please try again.', 'error');
+        form.classList.remove('loading');
+        submitBtn.innerHTML = originalText;
+    }
+}
     try {
         // Simulate API call
         await simulateAPICall(2000);
