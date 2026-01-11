@@ -5,7 +5,15 @@ A modern web application for AI-powered image generation using Stable Diffusion.
 ![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.95+-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
+## 🌐 Live Demo
 
+**Frontend**: [https://powerx1.github.io/ai-image-generator/AI-Image-Web/](https://powerx1.github.io/ai-image-generator/AI-Image-Web/)
+
+**Demo Login Credentials**:
+- Username: `demo`
+- Password: `demo123`
+
+> Note: The hosted demo uses browser localStorage for authentication. For full functionality with AI image generation, run the backend locally (see instructions below).
 ## ✨ Features
 
 - **Text-to-Image (txt2img)**: Generate stunning images from text prompts
