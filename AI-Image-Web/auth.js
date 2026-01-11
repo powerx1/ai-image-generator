@@ -135,10 +135,8 @@ async function handleLogin(e) {
         formData.append('username', email);
         formData.append('password', password);
         
-        // Check if backend is available
-        const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-            ? 'http://127.0.0.1:8000' 
-            : 'http://127.0.0.1:8000'; // Will fail and trigger demo mode
+        // Check if backend is available - use ngrok URL for public access
+        const API_URL = 'https://unsinuous-mercedes-pseudopolitic.ngrok-free.dev';
         
         try {
             const response = await fetch(`${API_URL}/login`, {
@@ -290,10 +288,8 @@ async function handleSignup(e) {
         const username = email.split('@')[0].toLowerCase();
         const fullName = `${firstName.trim()} ${lastName.trim()}`;
         
-        // Check if backend is available
-        const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-            ? 'http://127.0.0.1:8000' 
-            : 'http://127.0.0.1:8000';
+        // Check if backend is available - use ngrok URL for public access
+        const API_URL = 'https://unsinuous-mercedes-pseudopolitic.ngrok-free.dev';
         
         try {
             // API call to register endpoint

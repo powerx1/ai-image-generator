@@ -28,6 +28,9 @@ document.getElementById("generate").addEventListener("click", async () => {
 
     toggleLoader(true);
 
+    // Use ngrok URL when available, otherwise localhost
+    const API_URL = 'https://unsinuous-mercedes-pseudopolitic.ngrok-free.dev';
+
     const formData = new FormData();
     formData.append("prompt", prompt);
     formData.append("negative_prompt", negative);
@@ -59,7 +62,7 @@ document.getElementById("generate").addEventListener("click", async () => {
             }
         }
 
-        const res = await fetch("http://127.0.0.1:8000/generate", {
+        const res = await fetch(`${API_URL}/generate`, {
             method: "POST",
             body: formData
         });
