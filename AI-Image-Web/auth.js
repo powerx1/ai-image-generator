@@ -130,34 +130,86 @@ async function handleLogin(e) {
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
     
     try {
-        // API call to login endpoint
+        // Try API call to login endpoint
         const formData = new FormData();
         formData.append('username', email);
         formData.append('password', password);
         
-        const response = await fetch('http://127.0.0.1:8000/login', {
-            method: 'POST',
-            body: formData
-        });
+        // Check if backend is available
+        const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+            ? 'http://127.0.0.1:8000' 
+            : 'http://127.0.0.1:8000'; // Will fail and trigger demo mode
         
-        const data = await response.json();
-        
-        if (data.success && data.user && data.user.session_token) {
-            // Store auth token
-            const storage = remember ? localStorage : sessionStorage;
-            storage.setItem('session_token', data.user.session_token);
-            storage.setItem('username', data.user.username);
-            storage.setItem('email', data.user.email);
+        try {
+            const response = await fetch(`${API_URL}/login`, {
+                method: 'POST',
+                body: formData,
+                signal: AbortSignal.timeout(3000) // 3 second timeout
+            });
             
-            // Show success
-            showNotification('Login successful! Redirecting...', 'success');
+            const data = await response.json();
             
-            // Redirect
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 1000);
-        } else {
-            throw new Error(data.message || 'Login failed');
+            if (data.success && data.user && data.user.session_token) {
+                // Store auth token
+                const storage = remember ? localStorage : sessionStorage;
+                storage.setItem('session_token', data.user.session_token);
+                storage.setItem('username', data.user.username);
+                storage.setItem('email', data.user.email);
+                
+                // Show success
+                showNotification('Login successful! Redirecting...', 'success');
+                
+                // Redirect
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1000);
+                return;
+            } else {
+                throw new Error(data.message || 'Login failed');
+            }
+        } catch (apiError) {
+            // Backend not available - use demo mode
+            console.log('Backend not available, using demo mode');
+            
+            // Check if user exists in localStorage (demo registration)
+            const users = JSON.parse(localStorage.getItem('demo_users') || '{}');
+            
+            // Demo accounts
+            if (email === 'demo' && password === 'demo123') {
+                const storage = remember ? localStorage : sessionStorage;
+                storage.setItem('session_token', 'demo-' + Date.now());
+                storage.setItem('username', 'demo');
+                storage.setItem('email', 'demo@example.com');
+                storage.setItem('demo_mode', 'true');
+                
+                showNotification('Login successful (Demo Mode)! Redirecting...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1000);
+                return;
+            }
+            
+            // Check registered demo users
+            const userKey = Object.keys(users).find(key => 
+                (users[key].username === email || users[key].email === email) && 
+                users[key].password === password
+            );
+            
+            if (userKey) {
+                const storage = remember ? localStorage : sessionStorage;
+                storage.setItem('session_token', 'demo-' + Date.now());
+                storage.setItem('username', users[userKey].username);
+                storage.setItem('email', users[userKey].email);
+                storage.setItem('demo_mode', 'true');
+                
+                showNotification('Login successful (Demo Mode)! Redirecting...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1000);
+                return;
+            }
+            
+            throw new Error('Invalid credentials. Try: username "demo" password "demo123"');
         }
         
     } catch (error) {
@@ -215,30 +267,63 @@ async function handleSignup(e) {
         const username = email.split('@')[0].toLowerCase();
         const fullName = `${firstName.trim()} ${lastName.trim()}`;
         
-        // API call to register endpoint
-        const formData = new FormData();
-        formData.append('username', username);
-        formData.append('email', email);
-        formData.append('password', password);
-        formData.append('full_name', fullName);
+        // Check if backend is available
+        const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+            ? 'http://127.0.0.1:8000' 
+            : 'http://127.0.0.1:8000';
         
-        const response = await fetch('http://127.0.0.1:8000/register', {
-            method: 'POST',
-            body: formData
-        });
-        
-        const data = await response.json();
-        
-        if (data.success) {
-            // Show success
-            showNotification('Account created successfully! Redirecting to login...', 'success');
+        try {
+            // API call to register endpoint
+            const formData = new FormData();
+            formData.append('username', username);
+            formData.append('email', email);
+            formData.append('password', password);
+            formData.append('full_name', fullName);
             
-            // Redirect to login
+            const response = await fetch(`${API_URL}/register`, {
+                method: 'POST',
+                body: formData,
+                signal: AbortSignal.timeout(3000)
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                showNotification('Account created successfully! Redirecting to login...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
+                return;
+            } else {
+                throw new Error(data.message || 'Registration failed');
+            }
+        } catch (apiError) {
+            // Backend not available - use demo mode
+            console.log('Backend not available, using demo registration');
+            
+            // Store in localStorage for demo
+            const users = JSON.parse(localStorage.getItem('demo_users') || '{}');
+            
+            // Check if user already exists
+            if (users[email] || Object.values(users).some(u => u.username === username)) {
+                throw new Error('Username or email already exists (Demo Mode)');
+            }
+            
+            // Save user in demo mode
+            users[email] = {
+                username: username,
+                email: email,
+                password: password, // In demo mode, store plain (not for production!)
+                fullName: fullName,
+                createdAt: new Date().toISOString()
+            };
+            
+            localStorage.setItem('demo_users', JSON.stringify(users));
+            
+            showNotification('Account created successfully (Demo Mode)! Redirecting to login...', 'success');
             setTimeout(() => {
                 window.location.href = 'login.html';
             }, 1500);
-        } else {
-            throw new Error(data.message || 'Registration failed');
         }
         
     } catch (error) {
