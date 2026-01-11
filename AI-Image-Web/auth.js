@@ -169,7 +169,10 @@ async function handleLogin(e) {
             }
         } catch (apiError) {
             // Backend not available - use demo mode
-            console.log('Backend not available, using demo mode');
+            console.log('Backend not available, using demo mode:', apiError.message);
+            
+            // Show info message about demo mode
+            showNotification('Backend unavailable - Using Demo Mode', 'info');
             
             // Check if user exists in localStorage (demo registration)
             const users = JSON.parse(localStorage.getItem('demo_users') || '{}');
@@ -328,27 +331,6 @@ async function handleSignup(e) {
         
     } catch (error) {
         showNotification(error.message || 'Registration failed. Please try again.', 'error');
-        form.classList.remove('loading');
-        submitBtn.innerHTML = originalText;
-    }
-}
-    try {
-        // Simulate API call
-        await simulateAPICall(2000);
-        
-        // Store auth token
-        sessionStorage.setItem('authToken', 'demo-token-' + Date.now());
-        
-        // Show success
-        showNotification('Account created successfully! Redirecting...', 'success');
-        
-        // Redirect
-        setTimeout(() => {
-            window.location.href = 'index.html';
-        }, 1000);
-        
-    } catch (error) {
-        showNotification('Signup failed. Please try again.', 'error');
         form.classList.remove('loading');
         submitBtn.innerHTML = originalText;
     }
