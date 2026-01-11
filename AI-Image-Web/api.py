@@ -57,6 +57,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 STABLE_URL = os.environ.get("STABLE_URL", "http://127.0.0.1:7861")  # رابط WebUI (default 7860; override with env STABLE_URL)
