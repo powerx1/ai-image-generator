@@ -53,6 +53,7 @@ document.getElementById("generate").addEventListener("click", async () => {
 
     try {
         console.log("Sending request with mode:", mode);
+        console.log("API URL:", API_URL);
         console.log("FormData entries:");
         for (let [key, value] of formData.entries()) {
             if (key === "init_image") {
@@ -66,9 +67,20 @@ document.getElementById("generate").addEventListener("click", async () => {
             method: "POST",
             body: formData,
             headers: {
-                "ngrok-skip-browser-warning": "true"
+                "ngrok-skip-browser-warning": "true",
+                "User-Agent": "AI-Image-Generator"
             }
         });
+
+        // Check if response is HTML (ngrok warning page)
+        const contentType = res.headers.get("content-type");
+        if (contentType && contentType.includes("text/html")) {
+            throw new Error("Server returned HTML instead of JSON. The API may be unavailable. Please try again.");
+        }
+
+        if (!res.ok) {
+            throw new Error(`Server error: ${res.status} ${res.statusText}`);
+        }
 
         const data = await res.json();
         console.log("Response:", data);
@@ -80,7 +92,7 @@ document.getElementById("generate").addEventListener("click", async () => {
         }
     } catch (e) {
         console.error("Error:", e);
-        alert("خطأ في الاتصال بالـ API: " + e.message);
+        alert("خطأ في الاتصال بالـ API: " + e.message + "\n\nPlease make sure the server is running.");
     } finally {
         toggleLoader(false);
     }
