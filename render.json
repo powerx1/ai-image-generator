@@ -1,0 +1,11 @@
+{
+  "name": "ai-image-generator",
+  "version": "2.0.0",
+  "description": "AI Image Generator using Replicate API",
+  "scripts": {
+    "start": "uvicorn AI-Image-Web.api_cloud:app --host 0.0.0.0 --port ${PORT:-8000}"
+  },
+  "engines": {
+    "python": "3.9"
+  }
+}
