@@ -232,29 +232,49 @@ async function handleSignup(e) {
     const confirmPassword = document.getElementById('confirmPassword').value;
     const terms = document.getElementById('terms').checked;
     
-    // Validate
-    if (!firstName.trim() || !lastName.trim()) {
-        showNotification('Please enter your full name', 'error');
+    // Enhanced Validation
+    if (!firstName || !firstName.trim()) {
+        showNotification('❌ First name is required', 'error');
+        return;
+    }
+    
+    if (!lastName || !lastName.trim()) {
+        showNotification('❌ Last name is required', 'error');
+        return;
+    }
+    
+    if (!email || !email.trim()) {
+        showNotification('❌ Email address is required', 'error');
         return;
     }
     
     if (!validateEmail(email)) {
-        showError('email', 'Please enter a valid email address');
+        showError('email', '❌ Please enter a valid email address');
+        return;
+    }
+    
+    if (!password || password.length === 0) {
+        showNotification('❌ Password is required', 'error');
         return;
     }
     
     if (password.length < 8) {
-        showError('password', 'Password must be at least 8 characters');
+        showError('password', '❌ Password must be at least 8 characters');
+        return;
+    }
+    
+    if (!confirmPassword || confirmPassword.length === 0) {
+        showNotification('❌ Please confirm your password', 'error');
         return;
     }
     
     if (password !== confirmPassword) {
-        showError('confirmPassword', 'Passwords do not match');
+        showError('confirmPassword', '❌ Passwords do not match');
         return;
     }
     
     if (!terms) {
-        showNotification('Please accept the terms of service', 'error');
+        showNotification('❌ Please accept the terms of service', 'error');
         return;
     }
     
@@ -307,23 +327,36 @@ async function handleSignup(e) {
             // Store in localStorage for demo
             const users = JSON.parse(localStorage.getItem('demo_users') || '{}');
             
-            // Check if user already exists
-            if (users[email] || Object.values(users).some(u => u.username === username)) {
-                throw new Error('Username or email already exists (Demo Mode)');
+            // Prevent empty email or password from being stored
+            if (!email || !email.trim() || !password || !password.trim()) {
+                throw new Error('❌ Email and password cannot be empty');
             }
             
-            // Save user in demo mode
+            // Check if user already exists
+            if (users[email] || Object.values(users).some(u => u.username === username)) {
+                throw new Error('❌ Username or email already exists (Demo Mode)');
+            }
+            
+            // Validate email format before storing
+            if (!validateEmail(email)) {
+                throw new Error('❌ Invalid email format');
+            }
+            
+            // Save user in demo mode with validation
             users[email] = {
                 username: username,
-                email: email,
-                password: password, // In demo mode, store plain (not for production!)
-                fullName: fullName,
+                email: email.trim(),
+                password: password, // In demo mode only (not secure for production!)
+                fullName: fullName.trim(),
                 createdAt: new Date().toISOString()
             };
             
             localStorage.setItem('demo_users', JSON.stringify(users));
             
-            showNotification('Account created successfully (Demo Mode)! Redirecting to login...', 'success');
+            // Log for debugging
+            console.log('Demo user registered:', { username, email: email.trim(), fullName });
+            
+            showNotification('✅ Account created successfully (Demo Mode)! Redirecting to login...', 'success');
             setTimeout(() => {
                 window.location.href = 'login.html';
             }, 1500);
