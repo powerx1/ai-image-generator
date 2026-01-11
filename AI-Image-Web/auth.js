@@ -142,6 +142,7 @@ async function handleLogin(e) {
             const response = await fetch(`${API_URL}/login`, {
                 method: 'POST',
                 body: formData,
+                headers: { 'ngrok-skip-browser-warning': 'true' },
                 signal: AbortSignal.timeout(3000) // 3 second timeout
             });
             
@@ -302,6 +303,7 @@ async function handleSignup(e) {
             const response = await fetch(`${API_URL}/register`, {
                 method: 'POST',
                 body: formData,
+                headers: { 'ngrok-skip-browser-warning': 'true' },
                 signal: AbortSignal.timeout(3000)
             });
             

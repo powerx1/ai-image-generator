@@ -64,7 +64,10 @@ document.getElementById("generate").addEventListener("click", async () => {
 
         const res = await fetch(`${API_URL}/generate`, {
             method: "POST",
-            body: formData
+            body: formData,
+            headers: {
+                "ngrok-skip-browser-warning": "true"
+            }
         });
 
         const data = await res.json();
